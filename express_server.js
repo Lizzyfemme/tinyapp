@@ -11,6 +11,7 @@ let urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+
 function generateRandomString() {
   return Math.random().toString(36).replace('0.','').substring(0,6);
 }
@@ -52,6 +53,11 @@ res.redirect('/urls')
 app.post(`/urls/:shortURL`, (req, res) => {
   const shortURL= req.params.shortURL
 urlDatabase[shortURL]=req.body.longURL
+res.redirect('/urls')
+});
+
+app.post(`/login`, (req,res) => {
+res.cookie("username", req.body.username)
 res.redirect('/urls')
 });
 
