@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 
+  
   <%- include partials/_header.ejs %>
 
   <!-- Bootstrap CSS -->
@@ -24,6 +26,7 @@
           <tr>
             <td><%= url %></td>
             <td><%= urls[url] %></td>
+            <td> <form method="POST" action="/urls/<%= url %>/delete"><button type = "submit">Delete</button><form></td>
           </tr>
         <% } %>
       </tbody>
