@@ -20,7 +20,10 @@ function generateRandomString() {
 }
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = { 
+    username: req.cookies["username"],
+  }
+  res.render("urls_new",templateVars,);
 });
 
 app.get("/", (req, res) => {
@@ -50,8 +53,6 @@ app.post("/urls", (req, res) => {
   shortURL = generateRandomString() 
   urlDatabase[shortURL] = req.body.longURL
   res.redirect(`urls/${shortURL}`);
-   // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
 });
 
 app.post(`/urls/:shortURL/delete`, (req, res) => {
