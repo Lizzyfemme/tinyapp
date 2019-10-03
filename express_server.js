@@ -110,8 +110,9 @@ app.post("/urls", (req, res) => {
 });
 
 app.post(`/urls/:shortURL/delete`, (req, res) => {
-  for (let shortURL in urlDatabase) {
-    if (urlDatabase[shortURL].userID == req.cookies["user_id"]) {
+  const shortURL = req.params.shortURL
+  for (let code in urlDatabase) {
+    if (urlDatabase[code].userID === req.cookies["user_id"]) {
       delete urlDatabase[shortURL];
       res.redirect('/urls')
     }
@@ -140,9 +141,13 @@ app.post(`/registration`, (req, res) => {
 
 app.post(`/urls/:shortURL`, (req, res) => {
   const shortURL = req.params.shortURL
-
-  urlDatabase[shortURL] = req.body.longURL
-  res.redirect('/urls')
+    if (urlDatabase[shortURL].userID == req.cookies["user_id"]) {
+      urlDatabase[shortURL] = req.body.longURL
+      res.redirect('/urls')
+  } else{
+    res.status(401)
+    res.send("You are not authorized to edit this url.")
+  }
 });
 
 app.post(`/login`, (req, res) => {
