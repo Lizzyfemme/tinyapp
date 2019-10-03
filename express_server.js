@@ -15,16 +15,16 @@ const users = {
     email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
-  "user2RandomID": {
-    id: "user2RandomID",
+  "aJ48lW": {
+    id: "aJ48lW",
     email: "user2@example.com",
     password: "dishwasher-funk"
   }
 };
 
 let urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
+  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
 
 
@@ -77,16 +77,28 @@ app.get("/login", (req, res) => {
 
 app.get("/urls/:shortURL", (req, res) => {
   let templateVars = {
+    user_id: req.cookies["user_id"]
+  }
+  if(req.cookies["user_id"]===undefined){
+    res.render("urls_login",templateVars)
+  } else {
+  let templateVars = {
     user_id: req.cookies["user_id"],
     shortURL: req.params.shortURL,
     longURL: req.params.longURL
   };
   res.render("urls_show", templateVars);
+  }
 });
 
 app.post("/urls", (req, res) => {
   shortURL = generateRandomString()
-  urlDatabase[shortURL] = req.body.longURL
+  const createURL = {
+    longURL: req.body.longURL,
+    userID: req.cookies["user_id"]
+  }
+  urlDatabase[shortURL]=createURL;
+  console.log(urlDatabase)
   res.redirect(`urls/${shortURL}`);
 });
 
@@ -101,7 +113,7 @@ app.post(`/registration`, (req, res) => {
     //res.badRequest();
     res.status(400);
     res.send("There is no data in the password and/or the email")
-  }
+  };
   let key = generateRandomString();
   res.cookie("user_id", key)
 
@@ -117,6 +129,7 @@ app.post(`/registration`, (req, res) => {
 
 app.post(`/urls/:shortURL`, (req, res) => {
   const shortURL = req.params.shortURL
+  
   urlDatabase[shortURL] = req.body.longURL
   res.redirect('/urls')
 });
