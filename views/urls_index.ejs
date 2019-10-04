@@ -25,7 +25,7 @@
       </thead>
       <tbody>
         <% for(let url in urls) { %>
-          <% if (user_id === urls[url].userID) { %>
+          <% if (user_id.id === urls[url].userID) { %>
           <tr>
             <td><%= url %></td>
             <td><%= urls[url].longURL %></td>
